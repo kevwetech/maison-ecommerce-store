@@ -1,0 +1,56 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Delivery Options{% endblock %}
+
+{% block content %}
+<div class="page-header-row">
+    <div>
+        <h1 class="page-title">Delivery Options</h1>
+        <p class="page-sub">Manage shipping and delivery methods</p>
+    </div>
+    <a href="{% url 'dashboard_delivery_option_add' %}" class="btn-primary">
+        <i class="fa-solid fa-plus"></i> Add Option
+    </a>
+</div>
+
+<div class="card">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Estimated Days</th>
+                <th>Free Above</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for option in options %}
+            <tr>
+                <td><strong>{{ option.name }}</strong></td>
+                <td>{{ option.get_delivery_type_display }}</td>
+                <td>${{ option.price }}</td>
+                <td>{{ option.estimated_days }}</td>
+                <td>{% if option.free_above %}${{ option.free_above }}{% else %}—{% endif %}</td>
+                <td>
+                    {% if option.is_active %}
+                        <span class="badge badge-delivered">Active</span>
+                    {% else %}
+                        <span class="badge badge-pending">Inactive</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'dashboard_delivery_option_edit' option.id %}" class="btn-sm">Edit</a>
+                    <a href="{% url 'dashboard_delivery_option_delete' option.id %}" class="btn-sm btn-danger"
+                       onclick="return confirm('Delete this option?')">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="empty">No delivery options yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Delete Category{% endblock %}
+{% block nav_categories %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Delete Category</h1>
+    <p class="page-sub">This action cannot be undone.</p>
+</div>
+
+<div class="card form-card">
+    <div class="delete-confirm">
+        <div class="delete-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3>Delete "{{ category.name }}"?</h3>
+        <p>All products in this category may be affected.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn-primary btn-danger-full">
+                    <i class="fa-solid fa-trash"></i> Yes, Delete
+                </button>
+                <a href="{% url 'dashboard_categories' %}" class="btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

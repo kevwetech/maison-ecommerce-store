@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Products{% endblock %}
+{% block nav_products %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header-row">
+    <div>
+        <h1 class="page-title">Products</h1>
+        <p class="page-sub">Manage your product catalogue</p>
+    </div>
+    <a href="{% url 'dashboard_product_add' %}" class="btn-primary">
+        <i class="fa-solid fa-plus"></i> Add Product
+    </a>
+</div>
+
+<div class="search-bar">
+    <form method="GET">
+        <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" name="q" placeholder="Search products or categories..." value="{{ query }}">
+            {% if query %}
+                <a href="{% url 'dashboard_products' %}" class="clear-search">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn-primary">Search</button>
+    </form>
+</div>
+
+<div class="card">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="table-img">
+                    {% else %}
+                        <div class="table-img-placeholder"><i class="fa-solid fa-image"></i></div>
+                    {% endif %}
+                </td>
+                <td><strong>{{ product.name }}</strong></td>
+                <td>{{ product.category.name }}</td>
+                <td>${{ product.price }}</td>
+                <td>
+                    {% if product.stock <= 5 %}
+                        <span class="stock-badge">{{ product.stock }} left</span>
+                    {% else %}
+                        {{ product.stock }}
+                    {% endif %}
+                </td>
+                <td class="actions">
+                    <a href="{% url 'dashboard_product_edit' product.id %}" class="btn-sm">
+                        <i class="fa-solid fa-pen"></i> Edit
+                    </a>
+                    <a href="{% url 'product_delete' product.id %}" class="btn-sm btn-danger">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="empty">No products found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

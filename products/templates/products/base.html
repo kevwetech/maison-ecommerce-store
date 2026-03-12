@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison</title>
+    <link rel="stylesheet" href="{% static 'products/css/base.css' %}">
+    {% block extra_css %} {%endblock%}
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <!-- Hamburger (mobile only) -->
+        <button class="menu-toggle" id="menuToggle">☰</button>
+
+        <!-- Logo -->
+        <div class="logo">Maison<span>.</span></div>
+
+        <!-- Desktop nav links (hidden on mobile) -->
+        <div class="desktop-links">
+            <a href="{% url 'homepage' %}">Home</a>
+            <a href="{% url 'products_page' %}">Shop</a>
+            <a href="{% url 'categories_page' %}">Categories</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+
+        <!-- Right icons -->
+<div class="icons">
+    
+    {% if user.is_authenticated %}
+        <button onclick="document.getElementById('logoutModal').style.display='flex'" 
+            style="background:none; border:none; cursor:pointer; color:#333; font-size:1rem;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+    {% else %}
+        <a href="{% url 'login' %}"><i class="fa-regular fa-user"></i></a>
+    {% endif %}
+
+    <div class="cart-icon">
+        <a href="{% url 'cart_page' %}">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cart-count" {% if not cart_count %}style="display:none;"{% endif %}>{{ cart_count }}</span>
+        </a>
+    </div>
+    <a href="{% url 'track_order' %}"><i class="fa-solid fa-location-dot"></i></a>
+</div>
+
+        <!-- Mobile dropdown panel -->
+        <nav class="menu-panel" id="menuPanel">
+            <button class="close-btn" id="menuClose">✕</button>
+            <a href="{% url 'homepage' %}">Home</a>
+            <a href="{% url 'products_page' %}">Shop</a>
+            <a href="{% url 'categories_page' %}">Categories</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <div class="panel-search">
+                <input type="text" placeholder="Search...">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </nav>
+
+    </header>
+
+   {% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        <div class="toast-message toast-{{ message.tags }}">
+            {% if message.tags == 'success' %}
+                <i class="fa-solid fa-circle-check"></i>
+            {% elif message.tags == 'error' %}
+                <i class="fa-solid fa-circle-xmark"></i>
+            {% else %}
+                <i class="fa-solid fa-circle-info"></i>
+            {% endif %}
+            {{ message }}
+            <button class="toast-close" onclick="this.parentElement.remove()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Logout Modal -->
+<div id="logoutModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:380px; width:90%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.15);">
+        <div style="width:60px; height:60px; background:#fff0eb; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:24px; color:#d86c48;">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:10px;">Log Out?</h3>
+        <p style="color:#888; font-size:14px; margin-bottom:28px;">Are you sure you want to log out of your account?</p>
+        <div style="display:flex; gap:12px;">
+            <button onclick="document.getElementById('logoutModal').style.display='none'"
+                style="flex:1; padding:12px; border:1.5px solid #e8e4df; border-radius:10px; background:transparent; cursor:pointer; font-size:14px; font-family:'Inter',sans-serif;">
+                No, Go Back
+            </button>
+            <form action="{% url 'logout' %}" method="post" style="flex:1;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="width:100%; padding:12px; background:#d86c48; color:#fff; border:none; border-radius:10px; cursor:pointer; font-size:14px; font-family:'Inter',sans-serif;">
+                    Yes, Log Out
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <div class="smallcon1">
+            <div class="smallcon">
+                <h4>MAISON<span>.</span></h4>
+                <p>Curated furniture and home décor for the modern lifestyle. Quality pieces that last a lifetime.</p>
+                <div class="icons">
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <i class="fa-brands fa-x-twitter"></i>
+                </div>
+            </div>
+            <div class="smallcon">
+                <h4>SHOP</h4>
+                <ul>
+                    <li><a href="">Living Room</a></li>
+                    <li><a href="">Bedroom</a></li>
+                    <li><a href="">Kitchen</a></li>
+                    <li><a href="">Office</a></li>
+                    <li><a href="">Outdoor</a></li>
+                    <li><a href="">Lighting</a></li>
+                </ul>
+            </div>
+            <div class="smallcon">
+                <h4>COMPANY</h4>
+                <ul>
+                    <li><a href="">About Us</a></li>
+                    <li><a href="">Contact</a></li>
+                    <li><a href="">Careers</a></li>
+                    <li><a href="">Press</a></li>
+                </ul>
+            </div>
+            <div class="smallcon">
+                <h4>CONTACT</h4>
+                <p><i class="fa-solid fa-location-dot"></i> 123 Design Street, NYC 10001</p>
+                <p><i class="fa-solid fa-phone"></i> (555) 123-4567</p>
+                <p><span class="kes">✉</span> hello@maison.com</p>
+            </div>
+        </div>
+        <div class="footer-button">
+            <p>© 2024 Maison. All rights reserved.</p>
+            <div>
+                <span><a href="#">Privacy Policy</a></span>
+                <span><a href="#">Terms of Service</a></span>
+                <span><a href="#">Shipping Info</a></span>
+            </div>
+        </div>
+    </footer>
+     
+    <script src="{% static 'products/js/base.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

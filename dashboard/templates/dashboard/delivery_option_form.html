@@ -1,0 +1,63 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{% if option %}Edit{% else %}Add{% endif %} Delivery Option{% endblock %}
+
+{% block content %}
+<div class="page-header-row">
+    <div>
+        <h1 class="page-title">{% if option %}Edit{% else %}Add{% endif %} Delivery Option</h1>
+        <p class="page-sub">{% if option %}Update delivery option{% else %}Add a new delivery method{% endif %}</p>
+    </div>
+    <a href="{% url 'dashboard_delivery_options' %}" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</div>
+
+<div class="card form-card">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ option.name|default:'' }}" placeholder="e.g. Standard Delivery" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Type</label>
+                <select name="delivery_type" required>
+                    <option value="standard" {% if option.delivery_type == 'standard' %}selected{% endif %}>Standard</option>
+                    <option value="express" {% if option.delivery_type == 'express' %}selected{% endif %}>Express</option>
+                    <option value="same_day" {% if option.delivery_type == 'same_day' %}selected{% endif %}>Same Day</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Price ($)</label>
+                <input type="number" name="price" value="{{ option.price|default:'0' }}" step="0.01" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Estimated Days</label>
+                <input type="text" name="estimated_days" value="{{ option.estimated_days|default:'' }}" placeholder="e.g. 3-5 days" required>
+            </div>
+            <div class="form-group">
+                <label>Free Above ($) <span style="color:#888; font-size:12px;">optional</span></label>
+                <input type="number" name="free_above" value="{{ option.free_above|default:'' }}" step="0.01" placeholder="e.g. 150">
+            </div>
+        </div>
+
+        <div class="form-group" style="display:flex; align-items:center; gap:10px;">
+            <input type="checkbox" name="is_active" id="is_active" {% if option.is_active or not option %}checked{% endif %}>
+            <label for="is_active" style="margin:0;">Active</label>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-check"></i> {% if option %}Save Changes{% else %}Add Option{% endif %}
+            </button>
+            <a href="{% url 'dashboard_delivery_options' %}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

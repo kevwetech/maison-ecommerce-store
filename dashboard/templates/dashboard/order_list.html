@@ -1,0 +1,59 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Orders{% endblock %}
+{% block nav_orders %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Orders</h1>
+    <p class="page-sub">View and manage all customer orders</p>
+</div>
+
+<div class="card">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>{{ order.full_name|default:order.user.email }}</td>
+                <td>${{ order.total }}</td>
+                <td>
+                    {% if order.completed %}
+                        <span class="badge badge-delivered">delivered</span>
+                    {% else %}
+                        <span class="badge badge-pending">pending</span>
+                    {% endif %}
+                </td>
+                <td>{{ order.created_at|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'dashboard_order_detail' order.id %}" class="btn-sm">View</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="empty">No orders yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if order.status == 'pending' %}
+    <span class="badge badge-pending">Pending</span>
+{% elif order.status == 'processing' %}
+    <span class="badge badge-processing">Processing</span>
+{% elif order.status == 'shipped' %}
+    <span class="badge badge-shipped">Shipped</span>
+{% elif order.status == 'delivered' %}
+    <span class="badge badge-delivered">Delivered</span>
+{% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-sub">Welcome to your admin panel</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-info">
+            <p>Total Products</p>
+            <h2>{{ total_products }}</h2>
+            <span class="stat-note">{{ low_stock_count }} low stock</span>
+        </div>
+        <i class="fa-solid fa-box-open stat-icon blue"></i>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <p>Categories</p>
+            <h2>{{ total_categories }}</h2>
+            <span class="stat-note">Active categories</span>
+        </div>
+        <i class="fa-solid fa-list-tree stat-icon green"></i>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <p>Total Orders</p>
+            <h2>{{ total_orders }}</h2>
+            <span class="stat-note">{{ pending_orders }} pending</span>
+        </div>
+        <i class="fa-solid fa-cart-shopping stat-icon orange-cart"></i>
+    </div>
+    <div class="stat-card">
+        <div class="stat-info">
+            <p>Revenue</p>
+            <h2>${{ total_revenue }}</h2>
+            <span class="stat-note">Total sales</span>
+        </div>
+        <i class="fa-solid fa-dollar-sign stat-icon orange-dollar"></i>
+    </div>
+</div>
+
+<!-- Recent Orders -->
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fa-solid fa-arrow-trend-up"></i> Recent Orders</h3>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>{{ order.full_name|default:order.user.email }}</td>
+                <td>${{ order.total }}</td>
+                <td>
+                    {% if order.completed %}
+                        <span class="badge badge-delivered">delivered</span>
+                    {% else %}
+                        <span class="badge badge-pending">pending</span>
+                    {% endif %}
+                </td>
+                <td>{{ order.created_at|date:"d/m/Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="empty">No orders yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Low Stock Alert -->
+<div class="card alert-card">
+    <div class="card-header">
+        <h3><i class="fa-solid fa-box"></i> Low Stock Alert</h3>
+    </div>
+    {% if low_stock_products %}
+        {% for product in low_stock_products %}
+        <div class="stock-item">
+            <span>{{ product.name }}</span>
+            <span class="stock-badge">{{ product.stock }} left</span>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="stock-item"><span style="color:#888">All products are well stocked.</span></div>
+    {% endif %}
+</div>
+
+{% endblock %}

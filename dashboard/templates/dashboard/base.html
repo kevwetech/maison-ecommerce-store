@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison Admin — {% block title %}Dashboard{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="{% url 'homepage' %}" class="sidebar-back">
+            <i class="fa-solid fa-arrow-left"></i> Back to Store
+        </a>
+
+        <div class="sidebar-logo">Admin<span>.</span></div>
+
+        <nav class="sidebar-nav">
+            <a href="{% url 'dashboard_home' %}" class="nav-item {% block nav_home %}{% endblock %}">
+                <i class="fa-solid fa-grid-2"></i> Dashboard
+            </a>
+            <a href="{% url 'dashboard_products' %}" class="nav-item {% block nav_products %}{% endblock %}">
+                <i class="fa-solid fa-box"></i> Products
+            </a>
+            <a href="{% url 'dashboard_categories' %}" class="nav-item {% block nav_categories %}{% endblock %}">
+               <i class="fa-solid fa-list-tree"></i> Categories
+            </a>
+            <a href="{% url 'dashboard_orders' %}" class="nav-item {% block nav_orders %}{% endblock %}">
+                <i class="fa-solid fa-cart-shopping"></i> Orders
+            </a>
+            <a href="{% url 'dashboard_delivery_options' %}" class="nav-item {% block nav_delivery %}{% endblock %}">
+                <i class="fa-solid fa-truck"></i> Delivery Options
+            </a> 
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Mobile Header -->
+<div class="mobile-header">
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="mobile-logo">Admin<span>.</span></span>
+</div>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+<script src="{% static 'dashboard/js/dashboard.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

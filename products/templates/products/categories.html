@@ -1,0 +1,40 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Categories{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/categories.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="categories-section">
+    <div class="categories-header">
+        <h1>Shop by Category</h1>
+        <p>Find the perfect pieces for every room</p>
+    </div>
+
+    <div class="categories-grid">
+        {% for category in categories %}
+        <a href="{% url 'products_page' %}?category={{ category.id }}" class="category-card">
+            {% if category.image %}
+                <img src="{{ category.image.url }}" alt="{{ category.name }}">
+            {% else %}
+                <div class="category-placeholder"></div>
+            {% endif %}
+            <div class="category-overlay">
+                <h3>{{ category.name }}</h3>
+                <p>{{ category.product_set.count }} products</p>
+            </div>
+        </a>
+        {% empty %}
+        <p>No categories found.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'products/js/categories.js' %}"></script>
+{% endblock %}

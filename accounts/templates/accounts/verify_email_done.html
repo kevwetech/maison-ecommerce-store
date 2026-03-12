@@ -1,0 +1,21 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/signup.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="auth-container">
+    <h2>Email Verified!</h2>
+    <p>Your account is now active</p>
+
+    <div class="auth-card" style="text-align:center;">
+        <i class="fa-solid fa-circle-check" style="font-size:50px; color:#4caf7d; margin-bottom:20px;"></i>
+        <p style="color:#555; margin-bottom:20px;">You can now log in to your account.</p>
+        <a href="{% url 'login' %}" class="btn-primary" style="text-decoration:none; display:block; padding:10px; border-radius:6px;">
+            Go to Login
+        </a>
+    </div>
+</section>
+{% endblock %}

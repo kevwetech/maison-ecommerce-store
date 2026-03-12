@@ -1,0 +1,177 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/index.css' %}">
+{% endblock %}
+
+
+
+{% block content %}
+<section class="hero">
+    <div class="kess">
+        <div class="tag">NEW COLLECTION 2024</div>
+
+        <h1>
+            Design Your <br>
+            <span>Dream Space</span>
+        </h1>
+
+        <p>
+            Discover curated furniture and décor that transforms your house 
+            into a home. Quality craftsmanship meets contemporary design.
+        </p>
+
+        <div class="buttons">
+            <a href="#" class="btn primary">Shop Collection →</a>
+            <a href="#" class="btn secondary">Browse Categories</a>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <h2>10K+</h2>
+                <p>Happy Customers</p>
+            </div>
+            <div class="stat">
+                <h2>500+</h2>
+                <p>Products</p>
+            </div>
+            <div class="stat">
+                <h2>50+</h2>
+                <p>Designers</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="featured-card" style="background-image: url('{% static 'products/img/modern.jpg' %}')">
+    </div>
+    </div>
+</section>
+<section class="features">
+        <div class="feature scroll-animate">
+            <div class="icon"><i class="fa-regular fa-truck"></i></div>
+            <h4>Free Shipping</h4>
+            <p>On orders over $150</p>
+        </div>
+
+        <div class="feature scroll-animate">
+            <div class="icon"><i class="fa-regular fa-shield"></i></div>
+            <h4>Secure Checkout</h4>
+            <p>100% protected payments</p>
+        </div>
+
+        <div class="feature scroll-animate">
+            <div class="icon"><i class="fa-solid fa-rotate"></i></div>
+            <h4>Easy Returns</h4>
+            <p>30-day return policy</p>
+        </div>
+
+        <div class="feature scroll-animate">
+            <div class="icon"><i class="fa-solid fa-headset"></i></div>
+            <h4>24/7 Support</h4>
+            <p>Dedicated customer service</p>
+        </div>
+    </section>
+<section>
+    
+    <div class="shop">
+        <h1 class="spam">Shop by Category 
+            <br><span>Find exactly what you're looking for</span></h1>
+        <p class="viewport"><a href="{% url 'categories_page' %}">View All Categories →</a></p>
+    </div>
+    <div class="flex scroll-animate">
+        {% for category in home_categories %}
+        <a href="{% url 'products_page' %}?category={{ category.id }}" class="flex1">
+            {% if category.image %}
+                <img src="{{ category.image.url }}" alt="{{ category.name }}">
+            {% else %}
+                <img src="{% static 'products/img/modern.jpg' %}" alt="{{ category.name }}">
+            {% endif %}
+            <div class="items">
+                <h6>{{ category.name }}</h6>
+                <span>{{ category.product_set.count }} items</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+    
+    <section class="Categories">
+    <div class="shop">
+        <h1 class="spam">Featured Products
+            <br><span>Handpicked favorites for your home</span></h1>
+        <p class="viewport"><a href="{% url 'products_page' %}">View All products →</a></p>
+    </div>
+    <div class="grid">
+        {% for product in featured_products %}
+        <div class="grid1 scroll-animate">
+            <div class="img-wrap">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'products/img/modern.jpg' %}" alt="{{ product.name }}">
+                {% endif %}
+
+                {% if product.stock <= 10 and product.stock > 0 %}
+                    <span class="stock-badge">Only {{ product.stock }} left</span>
+                {% endif %}
+
+                <div class="over">
+                    <form action="{% url 'cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="list">
+                <h6>{{ product.category.name }}</h6>
+                <p><a href="{% url 'product_details' product.id %}" style="text-decoration:none; color:inherit;">{{ product.name }}</a></p>
+                <span>${{ product.price }}</span>
+            </div>
+            <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>
+        </div>
+        {% empty %}
+            <p class="no-products">No products found.</p>
+        {% endfor %}
+    </div>
+</section>
+    <br><br>
+    <section class="limited">
+        <div class="kess1 scroll-animate">
+            <div class="tags">LIMITED TIME OFFER</div>
+            <h1>Up to 40% Off</h1>
+            <p>Transform your space with our biggest sale of the season. <br>
+               Premium furniture at unbeatable prices.</p><br>
+            <a href="#">Shop the Sale →</a>
+        </div>
+        
+        <img src="{% static 'products/img/velvet1.jpg' %}" alt="" class="kess2 scroll-animate">    
+    </section>
+    <br><br> <br> <br> <br>
+    <section class="join">
+        <div class="our scroll-animate">
+            <div class="ke">✉</div> 
+            <h1>Join Our Newsletter</h1>
+            <p>Subscribe to get special offers, free giveaways, and design inspiration delivered to your inbox.</p>
+            <div class="email">
+              <input type="email" placeholder="Enter your email">
+              <button>Subscribe</button>
+            </div>
+            <p class="k1">By subscribing, you agree to our Privacy Policy.</p>
+        </div>
+    </section>
+    
+
+   
+
+ 
+    </div>
+    {% endblock %}
+    {% block extra_js %}  
+      <script src="{% static 'products/js/index.js'%}"></script>
+   {%endblock%}

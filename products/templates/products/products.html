@@ -1,0 +1,150 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Shop{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="products-page">
+
+    <!-- Header -->
+    <div class="products-header">
+        <div>
+            <h1>All Products</h1>
+            <p>{{ products|length }} products found</p>
+        </div>
+        <!-- Desktop Search -->
+        <div class="search-wrap desktop-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search products..." class="search" id="searchInput" value="{{ search }}">
+        </div>
+    </div>
+
+    <!-- Mobile Search Row -->
+    <div class="mobile-search-row">
+        <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search products..." class="search" id="searchInputMobile" value="{{ search }}">
+        </div>
+        <button class="filter-toggle-btn" id="filterToggle">
+            <i class="fa-solid fa-sliders"></i>
+        </button>
+    </div>
+
+    <div class="mamus">
+
+        <!-- Sidebar Filters (desktop) -->
+        <aside class="filters">
+            <h3>Categories</h3>
+            <div class="filter-item">
+                <input type="radio" name="cat" class="cat-filter" id="cat-all" value="" {% if not selected_category %}checked{% endif %}>
+                <label for="cat-all">All <span>({{ total_count }})</span></label>
+            </div>
+            {% for category in categories %}
+            <div class="filter-item">
+                <input type="radio" name="cat" class="cat-filter" id="cat-{{ category.id }}" value="{{ category.id }}"
+                    {% if selected_category == category.id|stringformat:"s" %}checked{% endif %}>
+                <label for="cat-{{ category.id }}">{{ category.name }} <span>({{ category.product_set.count }})</span></label>
+            </div>
+            {% endfor %}
+
+            <div class="range-wrap">
+                <label class="range-label">Price Range</label>
+                <div class="price-display">
+                    <span>$0</span>
+                    <span class="price-current">$<span id="priceValue">{{ max_price }}</span></span>
+                </div>
+                <input type="range" min="0" max="2000" value="{{ max_price }}" id="priceRange">
+                <div class="prices">
+                    <span>$0</span>
+                    <span>$2000</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <div class="image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="/static/default.jpg" alt="No image">
+            {% endif %}
+
+            {% if product.stock <= 10 and product.stock > 0 %}
+                <span class="stock-badge">Only {{ product.stock }} left</span>
+            {% endif %}
+
+            <div class="over">
+                <form action="{% url 'cart_add' product.id %}" method="post" onclick="event.stopPropagation()">
+                    {% csrf_token %}
+                    <button class="add-to-cart" data-id="{{ product.id }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+                        <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card-info">
+            <p class="cat">{{ product.category.name }}</p>
+            <h4 class="{% if product.stock <= 5 %}low-stock-name{% endif %}">{{ product.name }}</h4>
+            <p class="price">${{ product.price }}</p>
+            <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>
+        </div>
+    </div>
+    {% empty %}
+        <p class="no-products">No products found.</p>
+    {% endfor %}
+</div>
+
+    </div>
+</section>
+
+<!-- Mobile Filter Drawer Overlay -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Mobile Filter Drawer -->
+<div class="filter-drawer" id="filterDrawer">
+    <div class="drawer-header">
+        <h3>Filters</h3>
+        <button class="drawer-close" id="drawerClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <h3 style="font-size:14px; margin-bottom:12px;">Categories</h3>
+    <div class="filter-item">
+        <input type="radio" name="cat-mobile" class="cat-filter-mobile" id="m-cat-all" value="" {% if not selected_category %}checked{% endif %}>
+        <label for="m-cat-all">All <span>({{ total_count }})</span></label>
+    </div>
+    {% for category in categories %}
+    <div class="filter-item">
+        <input type="radio" name="cat-mobile" class="cat-filter-mobile" id="m-cat-{{ category.id }}" value="{{ category.id }}"
+            {% if selected_category == category.id|stringformat:"s" %}checked{% endif %}>
+        <label for="m-cat-{{ category.id }}">{{ category.name }} <span>({{ category.product_set.count }})</span></label>
+    </div>
+    {% endfor %}
+
+    <div class="range-wrap" style="margin-top:20px;">
+        <label class="range-label">Price Range</label>
+        <div class="price-display">
+            <span>$0</span>
+            <span class="price-current">$<span id="priceValueMobile">{{ max_price }}</span></span>
+        </div>
+        <input type="range" min="0" max="2000" value="{{ max_price }}" id="priceRangeMobile">
+        <div class="prices"><span>$0</span><span>$2000</span></div>
+    </div>
+
+    <button class="add-to-cart" style="width:100%; margin-top:24px; height:44px; border-radius:12px;" id="applyFilters">
+        Apply Filters
+    </button>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'products/js/products.js' %}"></script>
+{% endblock %}

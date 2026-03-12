@@ -1,0 +1,95 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block title %}Edit Product{% endblock %}
+{% block nav_products %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header-row">
+    <div>
+        <h1 class="page-title">Edit Product</h1>
+        <p class="page-sub">Update product details</p>
+    </div>
+    <a href="{% url 'dashboard_products' %}" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Products
+    </a>
+</div>
+
+<div class="card form-card">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" name="name" value="{{ product.name }}" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Price ($)</label>
+                <input type="number" name="price" value="{{ product.price }}" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Stock</label>
+                <input type="number" name="stock" value="{{ product.stock }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select name="category" required>
+                <option value="">-- Select Category --</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if product.category.id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description">{{ product.description }}</textarea>
+        </div>
+
+    <div class="form-group">
+    <label>Main Product Image</label>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" style="width:80px; border-radius:8px; margin-bottom:8px; display:block;">
+    {% endif %}
+      <input type="file" name="image" accept="image/*">
+    </div>
+
+    <div class="form-group">
+      <label>Additional Images <span style="color:#888; font-size:12px;">(hold Ctrl to select multiple)</span></label>
+      <input type="file" name="extra_images" accept="image/*" multiple>
+    </div>
+
+    {% if extra_images %}
+    <div class="form-group">
+      <label>Current Extra Images</label>
+     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+        {% for img in extra_images %}
+        <div style="position:relative;">
+            <img src="{{ img.image.url }}" style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+            <a href="{% url 'delete_product_image' img.id %}" 
+               style="position:absolute; top:-6px; right:-6px; background:#e74c3c; color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:11px; text-decoration:none;">
+                <i class="fa-solid fa-xmark"></i>
+            </a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+   {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-check"></i> Save Changes
+            </button>
+            <a href="{% url 'dashboard_products' %}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

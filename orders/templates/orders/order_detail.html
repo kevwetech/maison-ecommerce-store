@@ -1,0 +1,51 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<section style="width:92%; max-width:900px; margin:auto; padding:28px 0 60px;">
+
+    <a href="{% url 'homepage' %}"><i class="fa-solid fa-angle-left"></i> Back to Home</a>
+
+    <h1 style="font-family:'Playfair Display',serif; font-size:28px; margin:16px 0;">
+        Order #{{ order.id }}
+    </h1>
+
+    <div style="background:#fff; border:1.5px solid #ede9e3; border-radius:16px; padding:28px; margin-bottom:20px;">
+        <h2 style="font-family:'Playfair Display',serif; font-size:18px; margin-bottom:20px;">Order Items</h2>
+        {% for item in order.items.all %}
+        <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid #f0ece6;">
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" style="width:64px; height:64px; border-radius:10px; object-fit:cover;">
+            {% endif %}
+            <div style="flex:1;">
+                <p style="font-weight:500;">{{ item.product.name }}</p>
+                <p style="color:#888; font-size:13px;">Qty: {{ item.quantity }}</p>
+            </div>
+            <span style="font-weight:600;">${{ item.total_price }}</span>
+        </div>
+        {% endfor %}
+
+        <div style="margin-top:16px; border-top:1px solid #ede9e3; padding-top:16px;">
+            <p style="display:flex; justify-content:space-between; font-size:14px; color:#888; line-height:2.4;">
+                <span>Status</span>
+                <span>{% if order.completed %}Delivered{% else %}Pending{% endif %}</span>
+            </p>
+            <p style="display:flex; justify-content:space-between; font-size:14px; color:#888; line-height:2.4;">
+                <span>Date</span>
+                <span>{{ order.created_at|date:"F d, Y" }}</span>
+            </p>
+        </div>
+    </div>
+
+    <div style="background:#fff; border:1.5px solid #ede9e3; border-radius:16px; padding:28px;">
+        <h2 style="font-family:'Playfair Display',serif; font-size:18px; margin-bottom:20px;">Shipping Info</h2>
+        <p style="font-size:14px; color:#555; line-height:2;">{{ order.full_name }}</p>
+        <p style="font-size:14px; color:#555; line-height:2;">{{ order.email }}</p>
+        <p style="font-size:14px; color:#555; line-height:2;">{{ order.phone }}</p>
+        <p style="font-size:14px; color:#555; line-height:2;">{{ order.address }}, {{ order.city }}, {{ order.country }}</p>
+    </div>
+
+</section>
+{% endblock %}

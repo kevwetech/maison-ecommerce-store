@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+</head>
+<body>
+
+<div class="delete-confirm" style="margin-top: 100px;">
+    <div class="delete-icon">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+    <h3>Are you sure you want to delete "{{ product.name }}"?</h3>
+    <p>This will permanently remove the product from your store.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-actions" style="justify-content: center; margin-top: 20px;">
+            <button type="submit" class="btn-primary btn-danger-full">
+                <i class="fa-solid fa-trash"></i> Yes, Delete
+            </button>
+            <a href="{% url 'dashboard_products' %}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

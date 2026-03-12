@@ -1,0 +1,88 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Cart Page{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Your Cart</h1>
+
+    {% if cart_items %}
+    <div id="mamus" class="mamu">
+
+        <!-- Cart Items -->
+        <div id="cart-container">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                    <img src="/static/default.jpg" alt="No image">
+                {% endif %}
+
+                <div class="kevwe">
+                    <!-- Name & Remove -->
+                    <div class="kev">
+                        <div class="fav">
+                        <p class="cat">{{ item.product.category.name }}</p>
+                        <h4>{{ item.product.name }}</h4>
+                        </div>
+                        <button>
+                            <a href="{% url 'cart_remove' item.product.id %}">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </button>
+                    </div>
+
+                    <!-- Quantity & Price -->
+                    <div class="kew">
+                        <div class="qty">
+                            <a href="{% url 'cart_decrease' item.product.id %}">
+                                <button>−</button>
+                            </a>
+                            <span>{{ item.quantity }}</span>
+                            <a href="{% url 'cart_add' item.product.id %}">
+                                <button>+</button>
+                            </a>
+                        </div>
+                        <p>${{ item.subtotal }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Order Summary -->
+        <div id="cart-summary">
+            <h2>Order Summary</h2>
+            <p><span>Subtotal</span> <span>${{ total }}</span></p>
+            <p><span>Shipping</span> <span>Free</span></p>
+            <p><span>Tax (8%)</span> <span>${{ tax }}</span></p>
+            <h3><span>Total</span> <span>${{ grand_total }}</span></h3>
+            <div class="btn">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <button><a href="{% url 'checkout' %}">Proceed to Checkout →</a></button>
+                </form>
+                <a href="{% url 'products_page' %}">Continue Shopping</a>
+            </div>
+        </div>
+
+    </div>
+
+    {% else %}
+    <!-- Empty cart -->
+    <div class="frankly">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h2>Your Cart is Empty</h2>
+        <p>Looks like you haven't added anything yet</p>
+        <a href="{% url 'products_page' %}">Start Shopping</a>
+    </div>
+    {% endif %}
+
+</section>
+{% endblock %}

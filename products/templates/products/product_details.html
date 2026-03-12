@@ -1,0 +1,143 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/product_details.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="product-detail-page">
+
+    <a href="{% url 'products_page' %}" class="back-link">
+        <i class="fa-solid fa-angle-left"></i> Back to Products
+        </a>
+
+
+    <div class="product-detail-grid">
+        
+        <!-- Image -->
+<div class="product-detail-image">
+    <div class="slider">
+        <!-- Main image as first slide -->
+        {% if product.image %}
+        <div class="slide active">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+        {% endif %}
+
+        <!-- Extra images -->
+        {% for img in images %}
+        <div class="slide">
+            <img src="{{ img.image.url }}" alt="{{ product.name }}">
+        </div>
+        {% endfor %}
+
+        <!-- Arrows -->
+        <button class="slider-btn prev" id="prevBtn">
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <button class="slider-btn next" id="nextBtn">
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnails">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="thumb" class="thumb active" data-index="0">
+        {% endif %}
+        {% for img in images %}
+        <img src="{{ img.image.url }}" alt="thumb" class="thumb" data-index="{{ forloop.counter }}">
+        {% endfor %}
+    </div>
+</div>
+
+        <!-- Info -->
+        <div class="product-detail-info">
+
+            <p class="detail-category">{{ product.category.name }}</p>
+            <h1 class="detail-name">{{ product.name }}</h1>
+            <p class="detail-price">${{ product.price }}</p>
+            <p class="detail-description">{{ product.description }}</p>
+
+            {% if product.stock > 0 %}
+                <p class="in-stock"><i class="fa-solid fa-check"></i> In Stock</p>
+            {% else %}
+                <p class="out-stock"><i class="fa-solid fa-xmark"></i> Out of Stock</p>
+            {% endif %}
+
+            <!-- Quantity + Add to Cart -->
+            <div class="detail-quantity">
+                <p>Quantity:</p>
+                <div class="qty-controls">
+                    <button type="button" id="decreaseBtn">−</button>
+                    <span id="quantity">1</span>
+                    <button type="button" id="increaseBtn">+</button>
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <form action="{% url 'cart_add' product.id %}" method="post" id="addToCartForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="quantityInput" value="1">
+                    <button type="submit" class="btn-add-cart">
+                        <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+                    </button>
+                </form>
+                <button class="btn-wishlist"><i class="fa-regular fa-heart"></i></button>
+            </div>
+
+            <!-- Features -->
+            <div class="detail-features">
+                <div class="feature-item">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Free shipping on orders over $150</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-regular fa-shield"></i>
+                    <span>2-year warranty included</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>30-day easy returns</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+   <br><br>
+    <!-- You May Also Like -->
+    <div class="related-section">
+        <h2>You May Also Like</h2>
+        <div class="related-grid">
+            {% for related in related_products %}
+            <a href="{% url 'product_details' related.id %}" class="product-card">
+               <div class="image">
+                   {% if related.image %}
+                  <img src="{{ related.image.url }}" alt="{{ related.name }}">
+                  {% else %}
+                  <img src="{% static 'products/img/modern.jpg' %}" alt="{{ related.name }}">
+                  {% endif %}
+                  {% if related.stock <= 10 and related.stock > 0 %}
+                  <span class="stock-badge">Only {{ related.stock }} left</span>
+                  {% endif %}
+                </div>
+                <div class="card-info">
+                    <p class="cat">{{ related.category.name }}</p>
+                    <h4>{{ related.name }}</h4>
+                    <p class="price">${{ related.price }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+ <script src="{% static 'products/js/product_details.js' %}"></script>
+{% endblock %}

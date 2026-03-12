@@ -1,0 +1,107 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block nav_orders %}active{% endblock %}
+
+{% block content %}
+
+<div class="page-header-row">
+    <div>
+        <h1 class="page-title">Order #{{ order.id }}</h1>
+        <p class="page-sub">{{ order.created_at|date:"F d, Y" }}</p>
+    </div>
+    <a href="{% url 'dashboard_orders' %}" class="btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Orders
+    </a>
+</div>
+
+<div class="order-detail-grid">
+
+    <!-- Order Items -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fa-solid fa-bag-shopping"></i> Order Items</h3>
+            {% if order.completed %}
+                <span class="badge badge-delivered">delivered</span>
+            {% else %}
+                <span class="badge badge-pending">pending</span>
+            {% endif %}
+        </div>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>
+                        <div class="product-cell">
+                            {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="table-img">
+                            {% endif %}
+                            <span>{{ item.product.name }}</span>
+                        </div>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="card-footer">
+    <form method="POST" action="{% url 'dashboard_order_status' order.id %}">
+        {% csrf_token %}
+        <select name="status" class="status-select">
+            <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>Processing</option>
+            <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>Shipped</option>
+            <option value="delivered" {% if order.status == 'delivered' %}selected{% endif %}>Delivered</option>
+        </select>
+        <button type="submit" class="btn-primary">
+            <i class="fa-solid fa-check"></i> Update Status
+        </button>
+    </form>
+    {% if order.status == 'pending' %}
+    <span class="badge badge-pending">Pending</span>
+{% elif order.status == 'processing' %}
+    <span class="badge badge-processing">Processing</span>
+{% elif order.status == 'shipped' %}
+    <span class="badge badge-shipped">Shipped</span>
+{% elif order.status == 'delivered' %}
+    <span class="badge badge-delivered">Delivered</span>
+{% endif %}
+</div>
+
+    <!-- Customer Info -->
+    <div class="card">
+        <div class="card-header"><h3><i class="fa-solid fa-user"></i> Customer Info</h3></div>
+        <div class="info-list">
+            <div class="info-item">
+                <p class="info-label">Full Name</p>
+                <p>{{ order.full_name }}</p>
+            </div>
+            <div class="info-item">
+                <p class="info-label">Email</p>
+                <p>{{ order.user.email }}</p>
+            </div>
+            <div class="info-item">
+                <p class="info-label">Phone</p>
+                <p>{{ order.phone }}</p>
+            </div>
+            <div class="info-item">
+                <p class="info-label">Address</p>
+                <p>{{ order.address }}, {{ order.city }}, {{ order.country }}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
