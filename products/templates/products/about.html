@@ -1,0 +1,96 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="about-hero">
+    <div class="about-hero-text scroll-animate-left">
+        <div class="tag">OUR STORY</div>
+        <h1>Crafting Spaces,<br><span>Building Homes</span></h1>
+        <p>We believe every home deserves beautiful, quality furniture that tells a story. 
+           Maison was born from a passion for timeless design and exceptional craftsmanship.</p>
+    </div>
+    <div class="about-hero-img scroll-animate-right">
+        <img src="{% static 'products/img/modern.jpg' %}" alt="About Maison">
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="about-stats">
+    <div class="about-stat scroll-animate">
+        <h2>10K+</h2>
+        <p>Happy Customers</p>
+    </div>
+    <div class="about-stat scroll-animate">
+        <h2>500+</h2>
+        <p>Products</p>
+    </div>
+    <div class="about-stat scroll-animate">
+        <h2>50+</h2>
+        <p>Designers</p>
+    </div>
+    <div class="about-stat scroll-animate">
+        <h2>8+</h2>
+        <p>Years Experience</p>
+    </div>
+</section>
+
+<!-- Mission -->
+<section class="about-mission">
+    <div class="mission-card scroll-animate">
+        <div class="mission-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <h3>Our Mission</h3>
+        <p>To make beautiful, quality furniture accessible to everyone — pieces that last a lifetime and bring joy every day.</p>
+    </div>
+    <div class="mission-card scroll-animate">
+        <div class="mission-icon"><i class="fa-solid fa-eye"></i></div>
+        <h3>Our Vision</h3>
+        <p>A world where every home reflects the personality and values of the people who live in it.</p>
+    </div>
+    <div class="mission-card scroll-animate">
+        <div class="mission-icon"><i class="fa-solid fa-heart"></i></div>
+        <h3>Our Values</h3>
+        <p>Quality, sustainability, and customer satisfaction are at the heart of everything we do.</p>
+    </div>
+</section>
+
+<!-- Story -->
+<section class="about-story">
+    <div class="story-text scroll-animate-left">
+        <h2>How It All Started</h2>
+        <p>Maison started in 2016 as a small furniture workshop in New York City. Our founder, driven by a love for 
+           craftsmanship and design, wanted to create furniture that was both beautiful and built to last.</p>
+        <p>Today, we work with over 50 designers across the world to bring you a curated collection of furniture 
+           and home décor that transforms any space into a sanctuary.</p>
+        <a href="{% url 'products_page' %}" class="about-btn">Shop Our Collection →</a>
+    </div>
+    <div class="story-img scroll-animate-right">
+        <img src="{% static 'products/img/velvet1.jpg' %}" alt="Our Story">
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add('visible');
+            }, i * 100);
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-animate, .scroll-animate-left, .scroll-animate-right').forEach(el => observer.observe(el));
+</script>
+{% endblock %}

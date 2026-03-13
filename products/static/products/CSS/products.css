@@ -220,6 +220,28 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 20px;
     z-index: 2;
 }
+.kevwe{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-wishlist {
+    width: 32px;
+    height: 25px;
+    border: 1.5px solid #e8e4df;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.btn-wishlist:hover { border-color: #d86c48; color: #d86c48; }
 
 /* ── Hover Overlay ───────────── */
 .image .over {

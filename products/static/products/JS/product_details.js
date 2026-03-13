@@ -39,3 +39,36 @@ document.getElementById('nextBtn')?.addEventListener('click', () => showSlide(cu
 thumbs.forEach((thumb, i) => {
     thumb.addEventListener('click', () => showSlide(i));
 });
+
+
+
+
+function toggleWishlist(productId, btn) {
+    fetch(`/products/wishlist/toggle/${productId}/`, {
+        headers: { 'X-CSRFToken': getCookie('csrftoken') }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const icon = btn.querySelector('i');
+        if (data.status === 'added') {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid');
+        } else {
+            icon.classList.remove('fa-solid');
+            icon.classList.add('fa-regular');
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(cookie => {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        });
+    }
+    return cookieValue;
+}

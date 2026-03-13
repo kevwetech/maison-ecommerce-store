@@ -1,0 +1,20 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="auth-container">
+    <h2>Delete Account</h2>
+    <p>Are you sure you want to delete your account?</p>
+    <div class="auth-card" style="text-align:center;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary" style="background:#e74c3c;">
+                Yes, Delete My Account
+            </button>
+        </form>
+        <a href="{% url 'account_settings' %}" style="display:block; margin-top:15px; color:#d86c48;">
+            Cancel
+        </a>
+    </div>
+</section>
+{% endblock %}

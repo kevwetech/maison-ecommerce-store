@@ -13,12 +13,17 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'temporary-fallback-key-change-this')
 
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG =True
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 

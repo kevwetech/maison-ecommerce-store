@@ -1,0 +1,60 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/wishlist.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="wishlist-container">
+    <h2>My Wishlist</h2>
+    <p>Items you've saved for later</p>
+
+    {% if items %}
+    <div class="wishlist-grid">
+        {% for item in items %}
+        <div class="wishlist-card" id="wishlist-card-{{ item.product.id }}">
+            <a href="{% url 'product_details' item.product.id %}">
+                <div class="wishlist-image">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% endif %}
+                </div>
+            </a>
+            <div class="wishlist-info">
+                <h3>{{ item.product.name }}</h3>
+                <p class="wishlist-price">${{ item.product.price }}</p>
+                <div class="wishlist-actions">
+                    <a href="{% url 'cart_add' item.product.id %}" class="btn-add-cart">Add to Cart</a>
+                    <button class="btn-remove-wishlist" onclick="toggleWishlist({{ item.product.id }}, this)">
+                        <i class="fa-solid fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="wishlist-empty">
+        <i class="fa-regular fa-heart"></i>
+        <p>Your wishlist is empty.</p>
+        <a href="{% url 'products_page' %}">Browse Products</a>
+    </div>
+    {% endif %}
+</section>
+
+<script>
+function toggleWishlist(productId, btn) {
+    fetch(`/products/wishlist/toggle/${productId}/`, {
+        method: 'GET',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'removed') {
+            document.getElementById(`wishlist-card-${productId}`).remove();
+        }
+    });
+}
+</script>
+{% endblock %}

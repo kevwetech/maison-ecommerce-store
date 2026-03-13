@@ -7,7 +7,6 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: #fcfaf9;
     color: #222;
 }
 
@@ -49,6 +48,13 @@ body {
     font-size: 0.95rem;
     font-weight: 400;
     transition: color 0.2s;
+}
+.kevwes{
+    width: 50px;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .desktop-links a:hover {
@@ -335,11 +341,14 @@ footer li a:hover {
 
 @media (max-width: 768px) {
     .desktop-links {
-        display: none;
+        display: none !important;
     }
 
     .menu-toggle {
         display: flex;
+    }
+    .kevwes{
+        display: none;
     }
 
     .search-toggle {
@@ -392,6 +401,8 @@ footer li a:hover {
         overflow: hidden;
         transition: max-height 0.3s ease;
     }
+    
+
 
     .nav-links.active {
         max-height: 400px; /* big enough to show all links */

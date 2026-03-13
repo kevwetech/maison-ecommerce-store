@@ -1,16 +1,49 @@
- <h1>Our Products</h1>
+{% extends "products/base.html" %}
+{% load static %}
 
-    <!-- Category Filter -->
-    <div class="filter-form">
-        <form method="get">
-            <select name="category">
-                <option value="">All Categories</option>
-                {% for cat in categories %}
-                    <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
-                        {{ cat.name }}
-                    </option>
-                {% endfor %}
-            </select>
-            <button type="submit">Filter</button>
-        </form>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/account_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="settings-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ user.full_name|first|upper }}
+        </div>
+        <div>
+            <h2>{{ user.full_name }}</h2>
+            <p>{{ user.email }}</p>
+        </div>
     </div>
+
+    <div class="settings-grid">
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-regular fa-user"></i>
+                <h3>Edit Profile</h3>
+            </div>
+            <p>Update your name and email</p>
+            <a href="{% url 'userupdateinfo' %}" class="settings-btn">Edit Profile</a>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-lock"></i>
+                <h3>Change Password</h3>
+            </div>
+            <p>Keep your account secure</p>
+            <a href="{% url 'changepassword' %}" class="settings-btn">Change Password</a>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <h3>My Orders</h3>
+            </div>
+            <p>View all your past orders</p>
+            <a href="{% url 'order_list' %}" class="settings-btn">View Orders</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

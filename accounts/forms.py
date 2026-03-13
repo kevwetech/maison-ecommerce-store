@@ -61,3 +61,7 @@ class UserChangePasswordForm(PasswordChangeForm):
         label="Confirm New Password",
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirm New Password'})
     )
+
+
+
+    

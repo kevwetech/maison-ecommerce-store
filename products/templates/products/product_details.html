@@ -86,7 +86,11 @@
                         <i class="fa-solid fa-bag-shopping"></i> Add to Cart
                     </button>
                 </form>
-                <button class="btn-wishlist"><i class="fa-regular fa-heart"></i></button>
+                {% if user.is_authenticated %}
+                    <button class="btn-wishlist" onclick="toggleWishlist({{ product.id }}, this)">
+                        <i class="fa-{% if product.id in wishlist_ids %}solid{% else %}regular{% endif %} fa-heart"></i>
+                    </button>
+                {% endif %}
             </div>
 
             <!-- Features -->
@@ -135,6 +139,68 @@
         </div>
     </div>
 
+</section>
+<!-- Reviews Section -->
+<section class="reviews-section">
+    <div class="reviews-header">
+        <h2>Customer Reviews</h2>
+        <div class="avg-rating">
+            <span class="avg-number">{{ avg_rating|floatformat:1 }}</span>
+            <div class="stars">
+                {% for i in "12345" %}
+                    <i class="fa-{% if forloop.counter <= avg_rating %}solid{% else %}regular{% endif %} fa-star"></i>
+                {% endfor %}
+            </div>
+            <span class="review-count">({{ reviews.count }} reviews)</span>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="review-form-wrap">
+        <h3>{% if user_review %}Edit Your Review{% else %}Write a Review{% endif %}</h3>
+        <form method="post" action="{% url 'add_review' product.id %}">
+            {% csrf_token %}
+            <div class="star-select">
+                <p>Your Rating</p>
+                <div class="star-inputs">
+                    {% for i in "54321" %}
+                    <input type="radio" id="star{{ forloop.counter }}" name="rating" value="{{ i }}"
+                        {% if user_review and user_review.rating == forloop.counter %}checked{% endif %}>
+                    <label for="star{{ forloop.counter }}"><i class="fa-solid fa-star"></i></label>
+                    {% endfor %}
+                </div>
+            </div>
+            <textarea name="comment" placeholder="Share your experience with this product..." rows="4">{% if user_review %}{{ user_review.comment }}{% endif %}</textarea>
+            <button type="submit" class="submit-review">Submit Review</button>
+        </form>
+    </div>
+    {% else %}
+    <p class="login-to-review">
+        <a href="{% url 'login' %}">Login</a> to leave a review
+    </p>
+    {% endif %}
+
+    <div class="reviews-list">
+        {% for review in reviews %}
+        <div class="review-card">
+            <div class="review-top">
+                <div class="reviewer-avatar">{{ review.user.full_name|first|upper }}</div>
+                <div>
+                    <p class="reviewer-name">{{ review.user.full_name }}</p>
+                    <p class="review-date">{{ review.created_at|date:"F j, Y" }}</p>
+                </div>
+                <div class="review-stars">
+                    {% for i in "12345" %}
+                        <i class="fa-{% if forloop.counter <= review.rating %}solid{% else %}regular{% endif %} fa-star"></i>
+                    {% endfor %}
+                </div>
+            </div>
+            <p class="review-comment">{{ review.comment }}</p>
+        </div>
+        {% empty %}
+        <p class="no-reviews">No reviews yet. Be the first to review this product!</p>
+        {% endfor %}
+    </div>
 </section>
 {% endblock %}
 

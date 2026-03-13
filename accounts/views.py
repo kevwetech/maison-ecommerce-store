@@ -187,3 +187,19 @@ def password_reset_confirm_otp(request):
             messages.success(request, 'Password changed successfully!')
             return redirect('login')
     return render(request, 'accounts/password_reset_confirm.html')
+
+@login_required
+def account_settings(request):
+    return render(request, 'accounts/account_settings.html', {'user': request.user})
+
+
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        logout(request)
+        user.delete()
+        messages.success(request, 'Your account has been deleted.')
+        return redirect('signup')
+    return render(request, 'accounts/delete_account.html')

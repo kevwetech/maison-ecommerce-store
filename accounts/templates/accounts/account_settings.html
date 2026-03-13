@@ -1,0 +1,103 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/account_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="settings-container">
+    <h2>Account Settings</h2>
+    <p>Manage your account preferences</p>
+
+    <div class="settings-grid">
+
+        <!-- Profile Info -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-regular fa-user"></i>
+                <h3>Profile Information</h3>
+            </div>
+            <p>Update your name and email address</p>
+            <a href="{% url 'profile' user_id=user.id %}" class="settings-btn">Edit Profile</a>
+        </div>
+
+        <!-- Change Password -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-lock"></i>
+                <h3>Change Password</h3>
+            </div>
+            <p>Update your password to keep your account secure</p>
+            <a href="{% url 'changepassword' %}" class="settings-btn">Change Password</a>
+        </div>
+
+        <!-- Order History -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <h3>Order History</h3>
+            </div>
+            <p>View all your past orders and their status</p>
+            <a href="{% url 'order_list' %}" class="settings-btn">View Orders</a>
+        </div>
+
+        <!-- Track Order -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-magnifying-glass-location"></i>
+                <h3>Track Order</h3>
+            </div>
+            <p>Check the status of your current orders</p>
+            <a href="{% url 'track_order' %}" class="settings-btn">Track Order</a>
+        </div>
+
+        <!-- Logout -->
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <h3>Logout</h3>
+            </div>
+            <p>Sign out of your Maison account</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="settings-btn">Logout</button>
+            </form>
+        </div>
+
+        <!-- Delete Account -->
+        <div class="settings-card danger-card">
+            <div class="settings-card-header">
+                <i class="fa-solid fa-trash"></i>
+                <h3>Delete Account</h3>
+            </div>
+            <p>Permanently delete your account and all your data</p>
+            <button onclick="document.getElementById('deleteModal').style.display='flex'" 
+                class="settings-btn danger-btn">Delete Account</button>
+        </div>
+
+    </div>
+</section>
+
+<!-- Delete Modal -->
+<div id="deleteModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:380px; width:90%; text-align:center;">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size:40px; color:#e74c3c; margin-bottom:16px;"></i>
+        <h3 style="font-family:'Playfair Display',serif; margin-bottom:10px;">Delete Account?</h3>
+        <p style="color:#888; font-size:14px; margin-bottom:28px;">This action is permanent and cannot be undone. All your data will be lost.</p>
+        <div style="display:flex; gap:12px;">
+            <button onclick="document.getElementById('deleteModal').style.display='none'"
+                style="flex:1; padding:12px; border:1.5px solid #e8e4df; border-radius:10px; background:transparent; cursor:pointer;">
+                Cancel
+            </button>
+            <form action="{% url 'delete_account' %}" method="post" style="flex:1;">
+                {% csrf_token %}
+                <button type="submit"
+                    style="width:100%; padding:12px; background:#e74c3c; color:#fff; border:none; border-radius:10px; cursor:pointer;">
+                    Yes, Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

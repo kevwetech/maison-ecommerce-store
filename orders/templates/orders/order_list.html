@@ -1,0 +1,59 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'products/css/orders.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="orders-container">
+    <h2>My Orders</h2>
+    <p>Track and manage all your orders</p>
+
+    {% if orders %}
+    <div class="orders-list">
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <div>
+                    <h3>Order #{{ order.id }}</h3>
+                    <p>{{ order.created_at|date:"F j, Y" }}</p>
+                </div>
+                <span class="status-badge status-{{ order.status }}">
+                    {{ order.get_status_display }}
+                </span>
+            </div>
+
+            <div class="order-items">
+                {% for item in order.items.all %}
+                <div class="order-item">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% endif %}
+                    <div>
+                        <p class="item-name">{{ item.product.name }}</p>
+                        <p class="item-qty">Qty: {{ item.quantity }} × ${{ item.price }}</p>
+                    </div>
+                    <p class="item-total">${{ item.total_price }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="order-footer">
+                <p>Delivery: <strong>{{ order.delivery_option.name|default:"Standard" }}</strong></p>
+                <p>Total: <strong>${{ order.items.all|length }}</strong></p>
+                <a href="{% url 'order_detail' order.id %}" class="btn-view">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="no-orders">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <p>You haven't placed any orders yet.</p>
+        <a href="{% url 'products_page' %}">Start Shopping</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -94,7 +94,14 @@
             <p class="cat">{{ product.category.name }}</p>
             <h4 class="{% if product.stock <= 5 %}low-stock-name{% endif %}">{{ product.name }}</h4>
             <p class="price">${{ product.price }}</p>
+            <div class="kevwe">
             <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>
+        {% if user.is_authenticated %}
+            <button class="btn-wishlist" onclick="toggleWishlist({{ product.id }}, this)">
+               <i class="fa-{% if product.id in wishlist_ids %}solid{% else %}regular{% endif %} fa-heart"></i>
+           </button>
+        {% endif %}
+        </div>
         </div>
     </div>
     {% empty %}
