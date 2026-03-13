@@ -90,7 +90,6 @@ DATABASES = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    os.environ.get('RAILWAY_STATIC_URL', 'http://localhost'),
     'https://maison-ecommerce-store-production.up.railway.app',
     'http://localhost:8000',
 ]
