@@ -25,12 +25,15 @@ def signup(request):
             otp = str(random.randint(100000, 999999))
             EmailVerificationOTP.objects.create(user=user, otp=otp)
 
-            send_mail(
-                subject='Verify your Maison account',
-                message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
-                from_email='noreply@maison.com',
-                recipient_list=[user.email],
-            )
+            try:
+    send_mail(
+        subject='Verify your Maison account',
+        message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
+        from_email='noreply@maison.com',
+        recipient_list=[user.email],
+    )
+    except Exception as e:
+       print(f"Email error: {e}")
             request.session['verify_email'] = user.email
             return redirect('verify_email_otp')
         else:
@@ -137,12 +140,15 @@ def password_reset_request(request):
             user = CustomUser.objects.get(email=email)
             otp = str(random.randint(100000, 999999))
             PasswordResetOTP.objects.create(user=user, otp=otp)
-            send_mail(
-                subject='Your Maison Password Reset Code',
-                message=f'Hi {user.full_name},\n\nYour password reset code is: {otp}\n\nThis code expires in 10 minutes.',
-                from_email='noreply@maison.com',
-                recipient_list=[user.email],
-            )
+            try:
+    send_mail(
+        subject='Verify your Maison account',
+        message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
+        from_email='noreply@maison.com',
+        recipient_list=[user.email],
+    )
+    except Exception as e:
+        print(f"Email error: {e}")
             request.session['reset_email'] = email
             return redirect('password_reset_verify')
         except CustomUser.DoesNotExist:
