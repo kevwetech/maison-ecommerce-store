@@ -3,14 +3,27 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
 from .forms import RegistrationForm, UserUpdateInfoForm, PasswordChangeForm
 from .models import CustomUser, PasswordResetOTP, EmailVerificationOTP
 import random
+import threading
 from django.utils import timezone
 
+
+def send_email_async(subject, message, from_email, recipient_list):
+    def send():
+        try:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=from_email,
+                recipient_list=recipient_list,
+            )
+        except Exception as e:
+            print(f"Email error: {e}")
+    thread = threading.Thread(target=send)
+    thread.daemon = True
+    thread.start()
 
 
 # Signup
@@ -25,15 +38,12 @@ def signup(request):
             otp = str(random.randint(100000, 999999))
             EmailVerificationOTP.objects.create(user=user, otp=otp)
 
-            try:
-                send_mail(
-                    subject='Verify your Maison account',
-                    message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
-                    from_email='noreply@maison.com',
-                    recipient_list=[user.email],
-                )
-            except Exception as e:
-                print(f"Email error: {e}")
+            send_email_async(
+                subject='Verify your Maison account',
+                message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
+                from_email='noreply@maison.com',
+                recipient_list=[user.email],
+            )
 
             request.session['verify_email'] = user.email
             return redirect('verify_email_otp')
@@ -72,7 +82,6 @@ def verify_email_otp(request):
 
 def verify_email_done(request):
     return render(request, 'accounts/verify_email_done.html')
-
 
 
 # Login
@@ -141,15 +150,12 @@ def password_reset_request(request):
             user = CustomUser.objects.get(email=email)
             otp = str(random.randint(100000, 999999))
             PasswordResetOTP.objects.create(user=user, otp=otp)
-            try:
-                send_mail(
-                    subject='Your Maison Password Reset Code',
-                    message=f'Hi {user.full_name},\n\nYour password reset code is: {otp}\n\nThis code expires in 10 minutes.',
-                    from_email='noreply@maison.com',
-                    recipient_list=[user.email],
-                )
-            except Exception as e:
-                print(f"Email error: {e}")
+            send_email_async(
+                subject='Your Maison Password Reset Code',
+                message=f'Hi {user.full_name},\n\nYour password reset code is: {otp}\n\nThis code expires in 10 minutes.',
+                from_email='noreply@maison.com',
+                recipient_list=[user.email],
+            )
             request.session['reset_email'] = email
             return redirect('password_reset_verify')
         except CustomUser.DoesNotExist:
@@ -195,10 +201,10 @@ def password_reset_confirm_otp(request):
             return redirect('login')
     return render(request, 'accounts/password_reset_confirm.html')
 
+
 @login_required
 def account_settings(request):
     return render(request, 'accounts/account_settings.html', {'user': request.user})
-
 
 
 @login_required
