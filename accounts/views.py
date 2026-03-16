@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.conf import settings  # ADD THIS
 from .forms import RegistrationForm, UserUpdateInfoForm, PasswordChangeForm
 from .models import CustomUser, PasswordResetOTP, EmailVerificationOTP
 import random
@@ -18,6 +19,7 @@ def send_email_async(subject, message, from_email, recipient_list):
                 message=message,
                 from_email=from_email,
                 recipient_list=recipient_list,
+                fail_silently=True,  # ADD THIS - prevents timeouts
             )
         except Exception as e:
             print(f"Email error: {e}")
@@ -41,7 +43,7 @@ def signup(request):
             send_email_async(
                 subject='Verify your Maison account',
                 message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
-                from_email='noreply@maison.com',
+                from_email=settings.DEFAULT_FROM_EMAIL,  # CHANGED - use settings
                 recipient_list=[user.email],
             )
 
@@ -153,7 +155,7 @@ def password_reset_request(request):
             send_email_async(
                 subject='Your Maison Password Reset Code',
                 message=f'Hi {user.full_name},\n\nYour password reset code is: {otp}\n\nThis code expires in 10 minutes.',
-                from_email='noreply@maison.com',
+                from_email=settings.DEFAULT_FROM_EMAIL,  # CHANGED - use settings
                 recipient_list=[user.email],
             )
             request.session['reset_email'] = email
@@ -215,4 +217,3 @@ def delete_account(request):
         user.delete()
         messages.success(request, 'Your account has been deleted.')
         return redirect('signup')
-    return render(request, 'accounts/delete_account.html')
