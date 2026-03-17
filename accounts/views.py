@@ -38,8 +38,8 @@ def signup(request):
             user.save()
 
             otp = str(random.randint(100000, 999999))
+            EmailVerificationOTP.objects.filter(user=user).delete()
             EmailVerificationOTP.objects.create(user=user, otp=otp)
-
             send_email_async(
                 subject='Verify your Maison account',
                 message=f'Hi {user.full_name},\n\nYour verification code is: {otp}\n\nThis code expires in 10 minutes.',
@@ -91,13 +91,26 @@ def login_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=email, password=password)  # ✅ FIX
         if user is not None:
             login(request, user)
             messages.success(request, f"Welcome back, {user.full_name}!")
             return redirect('homepage')
         else:
+            # 🔥 CHECK IF USER EXISTS BUT IS NOT VERIFIED
+            try:
+                user = CustomUser.objects.get(email=email)
+
+                if not user.is_active:
+                    messages.error(request, "Please verify your email before logging in.")
+                    request.session['verify_email'] = email
+                    return redirect('verify_email_otp')
+
+            except CustomUser.DoesNotExist:
+                pass
+
             messages.error(request, "Invalid email or password.")
+
     return render(request, 'accounts/login.html')
 
 
