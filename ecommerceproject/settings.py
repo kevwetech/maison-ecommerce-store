@@ -83,14 +83,22 @@ MESSAGE_TAGS = {
 
 WSGI_APPLICATION = 'ecommerceproject.wsgi.application'
 
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"), 
-        conn_max_age=600,
-    )
-}
-
+# FIX: Use PostgreSQL on Railway, fallback to SQLite locally
+if os.environ.get("RAILWAY_ENV"):  # Railway sets this automatically
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.environ.get("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:  # Local dev
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 # FIX: Removed space from URL
 CSRF_TRUSTED_ORIGINS = [
     'https://maison-ecommerce-store-production.up.railway.app',
