@@ -84,9 +84,7 @@ MESSAGE_TAGS = {
 WSGI_APPLICATION = 'ecommerceproject.wsgi.application'
 
 # FIX: Use PostgreSQL on Railway, fallback to SQLite locally
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-if DATABASE_URL:
+if os.environ.get("DATABASE_URL"):
     # Use PostgreSQL (Railway)
     DATABASES = {
         "default": dj_database_url.parse(
