@@ -95,14 +95,6 @@ if DATABASE_URL:
             ssl_require=True
         )
     }
-else:
-    # Use SQLite locally
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
 # FIX: Removed space from URL
 CSRF_TRUSTED_ORIGINS = [
     'https://maison-ecommerce-store-production.up.railway.app',
