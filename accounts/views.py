@@ -12,21 +12,15 @@ from django.utils import timezone
 
 
 def send_email_async(subject, message, from_email, recipient_list):
-    def send():
-        try:
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email=from_email,
-                recipient_list=recipient_list,
-                fail_silently=True,  # ADD THIS - prevents timeouts
-            )
-        except Exception as e:
-            print(f"Email error: {e}")
-    thread = threading.Thread(target=send)
-    thread.daemon = True
-    thread.start()
-
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=recipient_list,
+        )
+    except Exception as e:
+        print(f"Email error: {e}")
 
 # Signup
 def signup(request):
