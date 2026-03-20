@@ -17,22 +17,19 @@ from sendgrid.helpers.mail import Mail
 
 
 def send_email_async(subject, message, from_email, recipient_list):
-    def send():
-        try:
-            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-            for recipient in recipient_list:
-                mail = Mail(
-                    from_email=os.environ.get('DEFAULT_FROM_EMAIL'),
-                    to_emails=recipient,
-                    subject=subject,
-                    plain_text_content=message
-                )
-                sg.client.mail.send.post(request_body=mail.get())
-        except Exception as e:
-            print(f"Email error: {e}")
-    thread = threading.Thread(target=send)
-    thread.daemon = True
-    thread.start()
+    try:
+        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        for recipient in recipient_list:
+            mail = Mail(
+                from_email=os.environ.get('DEFAULT_FROM_EMAIL'),
+                to_emails=recipient,
+                subject=subject,
+                plain_text_content=message
+            )
+            response = sg.client.mail.send.post(request_body=mail.get())
+            print(f"Email status: {response.status_code}")
+    except Exception as e:
+        print(f"Email error: {e}")
 
 # Signup
 def signup(request):
