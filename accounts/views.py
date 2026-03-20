@@ -9,18 +9,30 @@ from .models import CustomUser, PasswordResetOTP, EmailVerificationOTP
 import random
 import threading
 from django.utils import timezone
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+
 
 
 def send_email_async(subject, message, from_email, recipient_list):
-    try:
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email=from_email,
-            recipient_list=recipient_list,
-        )
-    except Exception as e:
-        print(f"Email error: {e}")
+    def send():
+        try:
+            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+            for recipient in recipient_list:
+                mail = Mail(
+                    from_email=os.environ.get('DEFAULT_FROM_EMAIL'),
+                    to_emails=recipient,
+                    subject=subject,
+                    plain_text_content=message
+                )
+                sg.client.mail.send.post(request_body=mail.get())
+        except Exception as e:
+            print(f"Email error: {e}")
+    thread = threading.Thread(target=send)
+    thread.daemon = True
+    thread.start()
 
 # Signup
 def signup(request):
