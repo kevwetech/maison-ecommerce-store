@@ -480,6 +480,18 @@ body {
     .mobile-header { display: flex; }
     .sidebar { display: flex !important; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 300; width: 220px !important; }
     .sidebar.open { transform: translateX(0); }
+    .card {
+    overflow-x: auto;
+}
+
+.admin-table {
+    min-width: 500px;
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
 }
 @media (max-width: 480px) {
     .sidebar { display: none !important; }
@@ -499,4 +511,16 @@ body {
     .mobile-header { display: flex; }
     .sidebar { display: flex !important; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 300; width: 220px !important; }
     .sidebar.open { transform: translateX(0); }
+    .card {
+    overflow-x: auto;
+}
+
+.admin-table {
+    min-width: 500px;
+}
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
 }
