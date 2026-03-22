@@ -81,6 +81,11 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+
+print("CLOUDINARY_CLOUD_NAME:", os.environ.get('CLOUDINARY_CLOUD_NAME'))
+print("CLOUDINARY_API_KEY:", os.environ.get('CLOUDINARY_API_KEY'))
+print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'debug',
     messages.INFO: 'info',
