@@ -1,0 +1,126 @@
+.orders-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto 80px;
+}
+
+.orders-container h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.orders-container > p {
+    color: #888;
+    font-size: 15px;
+    margin-bottom: 40px;
+}
+
+.order-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1.5px solid #e8e4df;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0ece6;
+}
+
+.order-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.order-header p { color: #888; font-size: 13px; }
+
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-pending { background: #fff3e0; color: #e65100; }
+.status-processing { background: #e3f2fd; color: #1565c0; }
+.status-shipped { background: #f3e5f5; color: #6a1b9a; }
+.status-delivered { background: #e8f5e9; color: #2e7d32; }
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0ece6;
+}
+
+.order-item:last-child { border-bottom: none; }
+
+.order-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+.item-qty { font-size: 12px; color: #888; margin-top: 4px; }
+.item-total { margin-left: auto; font-weight: 700; font-size: 14px; }
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0ece6;
+    font-size: 14px;
+    color: #555;
+}
+
+.btn-view {
+    padding: 8px 20px;
+    background: #d86c48;
+    color: #fff;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-view:hover { background: #c55c3d; }
+
+.no-orders {
+    text-align: center;
+    padding: 60px 0;
+    color: #888;
+}
+
+.no-orders i {
+    font-size: 50px;
+    margin-bottom: 16px;
+    color: #ddd;
+}
+
+.no-orders p { font-size: 16px; margin-bottom: 20px; }
+
+.no-orders a {
+    padding: 12px 30px;
+    background: #d86c48;
+    color: #fff;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .orders-container h2 { font-size: 26px; }
+    .order-footer { flex-direction: column; gap: 12px; align-items: flex-start; }
+}
