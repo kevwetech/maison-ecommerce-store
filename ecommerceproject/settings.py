@@ -33,15 +33,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
+    'cloudinary',
     'products',
     'accounts',
     'orders',
     'dashboard',
-    'cloudinary_storage',
-    'cloudinary',
+    
 ]
 
 SITE_ID = 1
