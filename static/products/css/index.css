@@ -178,6 +178,11 @@
     height: 200px;
 
 }
+.viewport a {
+  text-decoration: none;
+  margin-left: 10px;
+  color: #d86c48;
+}
 .spam{
    margin-left: 10px;
    font-size: 36px;
@@ -356,6 +361,29 @@
 .view-product:hover {
     text-decoration: underline;
 }
+.kevwe{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-wishlist {
+    width: 32px;
+    height: 25px;
+    border: 1.5px solid #e8e4df;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.btn-wishlist:hover { border-color: #d86c48; color: #d86c48; }
+
 
 .limited{
     width: 98%;

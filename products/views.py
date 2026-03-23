@@ -11,7 +11,12 @@ from django.db.models import Avg
 def homepage(request):
     all_categories = Category.objects.all()
     home_categories = Category.objects.all()[:6]
-    featured_products = Product.objects.all().order_by('-id')[:9]
+    featured_products = Product.objects.all().order_by('-id')[:8]
+    wishlist_ids = []
+
+    if request.user.is_authenticated:
+        wishlist_ids = list(Wishlist.objects.filter(user=request.user).values_list('product_id', flat=True))
+
 
     products = Product.objects.all()
     category_id = request.GET.get('category')
@@ -23,6 +28,7 @@ def homepage(request):
         "categories": all_categories,
         "home_categories": home_categories,
         "featured_products": featured_products,
+        "wishlist_ids": wishlist_ids,
     }
 
     return render(request, "products/index.html", context)

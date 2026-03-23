@@ -134,7 +134,14 @@
                 <p><a href="{% url 'product_details' product.id %}" style="text-decoration:none; color:inherit;">{{ product.name }}</a></p>
                 <span>${{ product.price }}</span>
             </div>
+            <div class="kevwe">
             <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>
+        {% if user.is_authenticated %}
+            <button class="btn-wishlist" onclick="toggleWishlist({{ product.id }}, this)">
+               <i class="fa-{% if product.id in wishlist_ids %}solid{% else %}regular{% endif %} fa-heart"></i>
+           </button>
+        {% endif %}
+        </div>
         </div>
         {% empty %}
             <p class="no-products">No products found.</p>
