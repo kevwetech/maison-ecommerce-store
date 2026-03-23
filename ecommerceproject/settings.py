@@ -21,9 +21,9 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'temporary-fallback-key-change-this')
+SECRET_KEY = os.environ.get('SECRET_KEY',)
 
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'  # FIX: Use env var
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'  # FIX: Use env var
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
@@ -109,13 +109,13 @@ if not os.environ.get("DATABASE_URL"):
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
-print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
 # FIX: Removed space from URL
 CSRF_TRUSTED_ORIGINS = [
     'https://maison-ecommerce-store-production.up.railway.app',
     'http://localhost:8000',
 ]
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -143,7 +143,7 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 
 MEDIA_URL = '/media/'
