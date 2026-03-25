@@ -27,7 +27,7 @@
             <tr>
                 <td><strong>#{{ order.id }}</strong></td>
                 <td>{{ order.full_name|default:order.user.email }}</td>
-                <td>${{ order.total }}</td>
+                <td>₦{{ order.get_total }}</td>
                 <td>
                     {% if order.completed %}
                         <span class="badge badge-delivered">delivered</span>
@@ -45,7 +45,7 @@
             {% endfor %}
         </tbody>
     </table>
-    {% if order.status == 'pending' %}
+    {% if orders.status == 'pending' %}
     <span class="badge badge-pending">Pending</span>
 {% elif order.status == 'processing' %}
     <span class="badge badge-processing">Processing</span>

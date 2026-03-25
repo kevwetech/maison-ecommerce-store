@@ -1,0 +1,18 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+<h2>Branding Settings</h2>
+
+{% if branding.logo_url %}
+    <div>
+        <p>Current Logo:</p>
+        <img src="{{ branding.logo_url }}" alt="Current logo" height="60">
+    </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Branding</button>
+</form>
+{% endblock %}

@@ -62,14 +62,14 @@
 <!-- Mobile dropdown panel -->
 <nav class="menu-panel" id="menuPanel">
     <button class="close-btn" id="menuClose">✕</button>
-    <a href="{% url 'homepage' %}"><i class="fa-solid fa-house"></i>Home</a>
-    <a href="{% url 'products_page' %}"><i class="fa-solid fa-shop"></i>Shop</a>
+    <a href="{% url 'homepage' %}"></i>Home</a>
+    <a href="{% url 'products_page' %}"></i>Shop</a>
     <a href="{% url 'categories_page' %}">Categories</a>
     <a href="{% url 'about_page' %}">About</a>
-    <a href="{% url 'contact_page' %}"><i class="fa-solid fa-phone"></i>Contact</a>
+    <a href="{% url 'contact_page' %}"></i>Contact</a>
     {% if user.is_authenticated %}
-        <a href="{% url 'wishlist_page' %}"><i class="fa-regular fa-heart"></i> Wishlist</a>
-        <a href="{% url 'account_settings' %}"><i class="fa-solid fa-gear"></i> Settings</a>
+        <a href="{% url 'wishlist_page' %}"></i> Wishlist</a>
+        <a href="{% url 'account_settings' %}"></i> Settings</a>
     {% endif %}
     <div class="panel-search">
         <input type="text" placeholder="Search...">

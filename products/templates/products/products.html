@@ -54,13 +54,13 @@
             <div class="range-wrap">
                 <label class="range-label">Price Range</label>
                 <div class="price-display">
-                    <span>$0</span>
+                    <span>₦0</span>
                     <span class="price-current">$<span id="priceValue">{{ max_price }}</span></span>
                 </div>
                 <input type="range" min="0" max="2000" value="{{ max_price }}" id="priceRange">
                 <div class="prices">
-                    <span>$0</span>
-                    <span>$2000</span>
+                    <span>₦0</span>
+                    <span>₦1000000000</span>
                 </div>
             </div>
         </aside>
@@ -93,7 +93,7 @@
         <div class="card-info">
             <p class="cat">{{ product.category.name }}</p>
             <h4 class="{% if product.stock <= 5 %}low-stock-name{% endif %}">{{ product.name }}</h4>
-            <p class="price">${{ product.price }}</p>
+            <p class="price">₦{{ product.price }}</p>
             <div class="kevwe">
             <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>
         {% if user.is_authenticated %}

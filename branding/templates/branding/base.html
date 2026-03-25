@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ branding.site_name }}</title>
+
+    {# Inject brand colors as CSS variables #}
+    <style>
+        :root {
+            --color-primary: {{ branding.primary_color }};
+            --color-secondary: {{ branding.secondary_color }};
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<header>
+    {% if branding.logo_url %}
+        <img src="{{ branding.logo_url }}" alt="{{ branding.site_name }} logo" height="40">
+    {% else %}
+        <span class="site-name">{{ branding.site_name }}</span>
+    {% endif %}
+</header>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

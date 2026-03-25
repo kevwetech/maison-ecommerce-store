@@ -59,7 +59,7 @@
 
             <p class="detail-category">{{ product.category.name }}</p>
             <h1 class="detail-name">{{ product.name }}</h1>
-            <p class="detail-price">${{ product.price }}</p>
+            <p class="detail-price">₦{{ product.price }}</p>
             <p class="detail-description">{{ product.description }}</p>
 
             {% if product.stock > 0 %}
@@ -132,7 +132,7 @@
                 <div class="card-info">
                     <p class="cat">{{ related.category.name }}</p>
                     <h4>{{ related.name }}</h4>
-                    <p class="price">${{ related.price }}</p>
+                    <p class="price">₦{{ related.price }}</p>
                 </div>
             </a>
             {% endfor %}

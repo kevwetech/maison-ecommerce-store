@@ -61,7 +61,7 @@ def products_page(request):
     max_price = request.GET.get('max_price', '')
     if max_price:
         products = products.filter(price__lte=max_price)
-    max_price = max_price or 2000
+    max_price = max_price or 1000000000
 
     return render(request, "products/products.html", {
         "products": products,

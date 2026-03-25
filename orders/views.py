@@ -115,7 +115,6 @@ def checkout(request):
             phone=request.POST.get('phone'),
             address=request.POST.get('address'),
             city=request.POST.get('city'),
-            country=request.POST.get('country'),
             delivery_option=delivery_option,
             delivery_price=delivery_price,
         )
@@ -163,9 +162,9 @@ def checkout(request):
 
     return render(request, 'orders/checkout.html', {
         'cart_items': cart_items,
-        'total': subtotal,
-        'tax': tax,
-        'grand_total': grand_total,
+        'total': float(subtotal or 0),
+        'tax': float(tax or 0),
+        'grand_total': float(grand_total or 0),
         'delivery_options': delivery_options,
         'paystack_public_key': settings.PAYSTACK_PUBLIC_KEY,
     })

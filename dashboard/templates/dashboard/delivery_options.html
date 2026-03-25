@@ -31,9 +31,9 @@
             <tr>
                 <td><strong>{{ option.name }}</strong></td>
                 <td>{{ option.get_delivery_type_display }}</td>
-                <td>${{ option.price }}</td>
+                <td>₦{{ option.price }}</td>
                 <td>{{ option.estimated_days }}</td>
-                <td>{% if option.free_above %}${{ option.free_above }}{% else %}—{% endif %}</td>
+                <td>{% if option.free_above %}₦{{ option.free_above }}{% else %}—{% endif %}</td>
                 <td>
                     {% if option.is_active %}
                         <span class="badge badge-delivered">Active</span>

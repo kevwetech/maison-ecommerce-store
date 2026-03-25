@@ -32,16 +32,16 @@
                     {% endif %}
                     <div>
                         <p class="item-name">{{ item.product.name }}</p>
-                        <p class="item-qty">Qty: {{ item.quantity }} × ${{ item.price }}</p>
+                        <p class="item-qty">Qty: {{ item.quantity }} × ₦{{ item.price }}</p>
                     </div>
-                    <p class="item-total">${{ item.total_price }}</p>
+                    <p class="item-total">₦{{ item.total_price }}</p>
                 </div>
                 {% endfor %}
             </div>
 
             <div class="order-footer">
                 <p>Delivery: <strong>{{ order.delivery_option.name|default:"Standard" }}</strong></p>
-                <p>Total: <strong>${{ order.items.all|length }}</strong></p>
+                <p>Total: <strong>₦{{ order.items.all|length }}</strong></p>
                 <a href="{% url 'order_detail' order.id %}" class="btn-view">View Details</a>
             </div>
         </div>

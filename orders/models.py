@@ -36,7 +36,6 @@ class Order(models.Model):
     email = models.EmailField()
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
@@ -47,6 +46,12 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.user.email}"
 
+    # ✅ PROPERLY INDENTED
+    def get_total(self):
+        return sum(item.total_price() for item in self.items.all()) + self.delivery_price
+
+
+        
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

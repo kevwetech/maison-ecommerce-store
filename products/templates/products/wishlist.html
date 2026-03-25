@@ -23,7 +23,7 @@
             </a>
             <div class="wishlist-info">
                 <h3>{{ item.product.name }}</h3>
-                <p class="wishlist-price">${{ item.product.price }}</p>
+                <p class="wishlist-price">₦{{ item.product.price }}</p>
                 <div class="wishlist-actions">
                     <a href="{% url 'cart_add' item.product.id %}" class="btn-add-cart">Add to Cart</a>
                     <button class="btn-remove-wishlist" onclick="toggleWishlist({{ item.product.id }}, this)">

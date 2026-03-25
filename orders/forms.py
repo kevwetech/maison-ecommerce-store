@@ -11,6 +11,5 @@ class CheckoutForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'Email'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
             'city': forms.TextInput(attrs={'placeholder': 'City'}),
-            'country': forms.TextInput(attrs={'placeholder': 'Country'}),
             'phone': forms.TextInput(attrs={'placeholder': 'Phone Number'}),
         }

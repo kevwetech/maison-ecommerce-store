@@ -9,7 +9,7 @@
 
 {% block content %}
 <section>
-    <h1>Your Cart</h1>
+    <h1>Start Shopping</h1>
 
     {% if cart_items %}
     <div id="mamus" class="mamu">
@@ -49,7 +49,7 @@
                                 <button>+</button>
                             </a>
                         </div>
-                        <p>${{ item.subtotal }}</p>
+                        <p>₦{{ item.subtotal }}</p>
                     </div>
                 </div>
             </div>
@@ -59,10 +59,10 @@
         <!-- Order Summary -->
         <div id="cart-summary">
             <h2>Order Summary</h2>
-            <p><span>Subtotal</span> <span>${{ total }}</span></p>
+            <p><span>Subtotal</span> <span>₦{{ total }}</span></p>
             <p><span>Shipping</span> <span>Free</span></p>
-            <p><span>Tax (8%)</span> <span>${{ tax }}</span></p>
-            <h3><span>Total</span> <span>${{ grand_total }}</span></h3>
+            <p><span>Tax (8%)</span> <span>₦{{ tax }}</span></p>
+            <h3><span>Total</span> <span>₦{{ grand_total }}</span></h3>
             <div class="btn">
                 <form method="POST" action="">
                     {% csrf_token %}

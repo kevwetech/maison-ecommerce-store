@@ -132,7 +132,7 @@
             <div class="list">
                 <h6>{{ product.category.name }}</h6>
                 <p><a href="{% url 'product_details' product.id %}" style="text-decoration:none; color:inherit;">{{ product.name }}</a></p>
-                <span>${{ product.price }}</span>
+                <span>₦{{ product.price }}</span>
             </div>
             <div class="kevwe">
             <a href="{% url 'product_details' product.id %}" class="view-product">View Product →</a>

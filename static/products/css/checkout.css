@@ -196,7 +196,7 @@ section h1 {
 #cart-summary h3 {
     font-size: 17px;
     font-weight: 700;
-    font-family: 'Playfair Display', serif;
+    
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #ede9e3;
