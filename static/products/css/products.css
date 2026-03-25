@@ -287,13 +287,15 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* ── Card Info ───────────────── */
-.card-info { padding: 12px 4px 0; }
+.card-info { 
+    padding: 12px 4px 0; 
+    line-height: 1.5;
+}
 
 .cat {
-    color: #aaa;
     font-size: 12px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
+    font-weight: 500;
+    color: #1a1a1a;
     letter-spacing: 0.5px;
 }
 
@@ -301,7 +303,6 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 15px;
     font-weight: 500;
     color: #1a1a1a;
-    margin: 0 0 6px;
     font-family: 'Times New Roman', Times, serif;
 }
 
@@ -316,7 +317,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .view-product {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 5px;
     font-size: 13px;
     color: #d86c48;
     text-decoration: none;
